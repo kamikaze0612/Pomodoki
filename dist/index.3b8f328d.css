@@ -1,0 +1,147 @@
+.main-content {
+  height: 100vh;
+}
+
+.header {
+  padding: 2.4rem;
+}
+
+.header--flex-box {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.logo-link:link, .logo-link:visited {
+  color: var(--primary-text-color);
+  text-decoration: none;
+}
+
+.logo-box {
+  align-items: center;
+  gap: 6px;
+  display: flex;
+}
+
+.logo-img {
+  height: 2.4rem;
+}
+
+.logo-text {
+  font-family: Quicksand, sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.nav-bar-links {
+  gap: 1.6rem;
+  list-style: none;
+  display: flex;
+}
+
+.timer--box {
+  background-color: var(--light-color);
+  color: #fff;
+  border-radius: 11px;
+  margin-top: 3.2rem;
+  padding: 3.2rem;
+}
+
+.timer--tabs-box {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.timer--tab {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 1.6rem;
+}
+
+.timer--counter-box {
+  text-align: center;
+  margin-top: 3.2rem;
+}
+
+.counter--num-text {
+  font-family: Varela Round, sans-serif;
+  font-size: 12.8rem;
+  font-weight: 700;
+}
+
+.btn--container {
+  margin-top: 3.2rem;
+  position: relative;
+}
+
+.btn--timer {
+  text-transform: uppercase;
+  color: var(--dense-color);
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin: 0 auto;
+  padding: 1.6rem 6.4rem;
+  font-size: 2.4rem;
+  font-weight: 600;
+  display: block;
+  box-shadow: 0 8px #ececec;
+}
+
+.btn--next-session {
+  color: #fff;
+  cursor: pointer;
+  background-color: #0000;
+  border: none;
+  font-size: 6.4rem;
+  position: absolute;
+  top: 0;
+  right: 15%;
+}
+
+.clicked {
+  transform: translateY(8px);
+  box-shadow: 0 0;
+}
+
+.timer--status-box {
+  margin-top: 2.4rem;
+}
+
+.timer--session-counter-text {
+  font-size: 2rem;
+}
+
+.timer--session-text {
+  text-align: center;
+  margin-top: 1.2rem;
+  font-size: 2rem;
+}
+
+.timer--session-reset-btn {
+  cursor: pointer;
+  color: #e0e0e0;
+  background-color: #0000;
+  border: none;
+  margin: 0 auto;
+  font-size: 1.8rem;
+  display: block;
+}
+
+.timer--session-reset-btn:hover {
+  color: #fff;
+}
+
+.active {
+  background-color: var(--dense-color);
+  font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+/*# sourceMappingURL=index.3b8f328d.css.map */

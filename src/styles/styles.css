@@ -1,0 +1,156 @@
+/* *********************** */
+/* MAIN BODY */
+/* *********************** */
+.main-content {
+  height: 100vh;
+}
+
+/* *********************** */
+/* HEADER */
+/* *********************** */
+.header {
+  padding: 2.4rem;
+}
+
+.header--flex-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-link:link,
+.logo-link:visited {
+  text-decoration: none;
+  color: var(--primary-text-color);
+}
+
+.logo-box {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logo-img {
+  height: 2.4rem;
+}
+
+.logo-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.nav-bar-links {
+  list-style: none;
+  display: flex;
+  gap: 1.6rem;
+}
+
+/* *********************** */
+/* TIMER SECTION */
+/* *********************** */
+.timer--box {
+  margin-top: 3.2rem;
+  background-color: var(--light-color);
+  border-radius: 11px;
+  padding: 3.2rem;
+  color: #fff;
+}
+
+.timer--tabs-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer--tab {
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.timer--counter-box {
+  margin-top: 3.2rem;
+  text-align: center;
+}
+
+.counter--num-text {
+  font-size: 12.8rem;
+  font-weight: 700;
+  font-family: 'Varela Round', sans-serif;
+}
+
+.btn--container {
+  position: relative;
+  margin-top: 3.2rem;
+}
+
+.btn--timer {
+  border: none;
+  padding: 1.6rem 6.4rem;
+  font-size: 2.4rem;
+  text-transform: uppercase;
+  color: var(--dense-color);
+  font-weight: 600;
+  border-radius: 5px;
+  display: block;
+  margin: 0 auto;
+  /* border-bottom: 8px solid #ececec; */
+  box-shadow: 0 8px 0 #ececec;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+.btn--next-session {
+  color: #fff;
+  border: none;
+  background-color: transparent;
+  font-size: 6.4rem;
+  position: absolute;
+  top: 0;
+  right: 15%;
+  cursor: pointer;
+}
+
+.clicked {
+  transform: translateY(8px);
+  box-shadow: 0 0 0;
+}
+
+.timer--status-box {
+  margin-top: 2.4rem;
+}
+
+.timer--session-counter-text {
+  font-size: 2rem;
+}
+
+.timer--session-text {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 1.2rem;
+}
+
+.timer--session-reset-btn {
+  font-size: 1.8rem;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: #e0e0e0;
+  display: block;
+  margin: 0 auto;
+}
+
+.timer--session-reset-btn:hover {
+  color: #fff;
+}
+
+.active {
+  font-weight: 600;
+  background-color: var(--dense-color);
+}
+
+.hidden {
+  display: none;
+}
