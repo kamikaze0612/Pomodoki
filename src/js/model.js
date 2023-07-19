@@ -7,32 +7,47 @@ export const state = {
     purple: ['#7048e8', '#7e5aea', '#8d6ded', '#5a3aba'],
     yellow: ['#f08c00', '#f2981a', '#f3a333', '#c07000'],
   },
-  sessionCounter: 0,
-  longBreakInterval: 4,
+  autoStartPomodoro: false,
   autoStartBreak: true,
-  autoStartPomodoro: true,
+  longBreakIntervals: 4,
+  sessionCounter: 1,
   timers: {
     pomodoro: {
-      timer: 1500,
+      name: 'pomodoro',
+      timer: 3,
       colorSet: ['#c84242', '#ce5555', '#d36868', '#b43b3b'],
     },
     shortBreak: {
-      timer: 300,
+      name: 'shortBreak',
+      timer: 2,
       colorSet: ['#2f9e44', '#44a857', '#59b169', '#267e36'],
     },
     longBreak: {
-      timer: 900,
+      name: 'longBreak',
+      timer: 1,
       colorSet: ['#1971c2', '#307fc8', '#478dce', '#145a9b'],
     },
   },
-  currentTimer: {
-    timer: 1500,
-    colorSet: ['#c84242', '#ce5555', '#d36868', '#b43b3b'],
-  },
 };
 
-// const changeShortBreakTime = function () {};
-// const changeLongBreakTime = function () {};
-export const changeCurrentTimer = function (curTime) {
-  state.currentTimer = state.timers[curTime];
+export const getTimerObject = function (timerModeName) {
+  return state.timers[timerModeName];
+};
+
+export const getNextTimerName = function (currentTimerName) {
+  if (
+    currentTimerName === 'pomodoro' &&
+    state.sessionCounter % state.longBreakIntervals !== 0
+  ) {
+    return 'shortBreak';
+  }
+
+  if (
+    currentTimerName === 'pomodoro' &&
+    state.sessionCounter % state.longBreakIntervals === 0
+  ) {
+    return 'longBreak';
+  }
+
+  return 'pomodoro';
 };

@@ -578,23 +578,61 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _modelJs = require("./model.js");
 var _timerViewJs = require("./views/timerView.js");
 var _timerViewJsDefault = parcelHelpers.interopDefault(_timerViewJs);
-const controlTabs = function() {
-    _modelJs.changeCurrentTimer((0, _timerViewJsDefault.default).getTimerMode());
-    console.log(_modelJs.state.currentTimer);
-    (0, _timerViewJsDefault.default).setTimer(_modelJs.state.currentTimer.timer);
+var _settingsViewJs = require("./views/settingsView.js");
+var _settingsViewJsDefault = parcelHelpers.interopDefault(_settingsViewJs);
+const controlTimer = function() {
+    const currentTimerMode = _modelJs.getTimerObject("pomodoro");
+    (0, _timerViewJsDefault.default).setTimer(currentTimerMode);
+};
+const controlApplySettings = function() {
+    const currentTimerMode = (0, _timerViewJsDefault.default).getTimerMode();
+    const currentTimerObject = _modelJs.getTimerObject(currentTimerMode);
+    (0, _timerViewJsDefault.default).setTimer(currentTimerObject);
+};
+const controlTab = function() {
+    const currentTimerMode = (0, _timerViewJsDefault.default).getTimerMode();
+    const currentTimerObject = _modelJs.getTimerObject(currentTimerMode);
+    (0, _timerViewJsDefault.default).setTimer(currentTimerObject);
+};
+const controlNextSession = function() {
+    (0, _timerViewJsDefault.default).setSession(_modelJs.state.sessionCounter);
+    const currentTimerMode = (0, _timerViewJsDefault.default).getTimerMode();
+    const nextTimerMode = _modelJs.getNextTimerName(currentTimerMode);
+    const autoStart = {
+        nextTimer: nextTimerMode,
+        autoStartPomodoro: _modelJs.state.autoStartPomodoro,
+        autoStartBreak: _modelJs.state.autoStartBreak
+    };
+    if (nextTimerMode !== "pomodoro") _modelJs.state.sessionCounter++;
+    const nextTimerObject = _modelJs.getTimerObject(nextTimerMode);
+    (0, _timerViewJsDefault.default).setTimer(nextTimerObject);
+    return autoStart;
+};
+const controlResetSessions = function() {
+    _modelJs.state.sessionCounter = 1;
+    (0, _timerViewJsDefault.default).setSession(_modelJs.state.sessionCounter);
+};
+const controlSliderBtn = function(value) {
+    if (value === "shortBreak") _modelJs.state.autoStartBreak = !_modelJs.state.autoStartBreak;
+    if (value === "pomodoro") _modelJs.state.autoStartPomodoro = !_modelJs.state.autoStartPomodoro;
 };
 const init = function() {
-    // Setting current active timer
-    (0, _timerViewJsDefault.default).setTimer(_modelJs.state.currentTimer.timer);
-    (0, _timerViewJsDefault.default).addHandlerSelectTab(controlTabs);
+    (0, _timerViewJsDefault.default).addHandlerStart(controlTimer, controlNextSession);
+    (0, _timerViewJsDefault.default).addHandlerTab(controlTab);
+    (0, _timerViewJsDefault.default).addHandlerNextSession(controlNextSession, _modelJs.state, _modelJs.getNextTimerName);
+    (0, _timerViewJsDefault.default).addHandlerReset(controlResetSessions);
+    (0, _settingsViewJsDefault.default).addHandlerTimerSettings(controlApplySettings, _modelJs.state);
+    (0, _settingsViewJsDefault.default).addHandlerApplyColorSettings(controlApplySettings, _modelJs.state);
+    (0, _settingsViewJsDefault.default).addHandlerSliderBtn(controlSliderBtn);
 };
 init();
 
-},{"./model.js":"Y4A21","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/timerView.js":"fNwdq"}],"Y4A21":[function(require,module,exports) {
+},{"./model.js":"Y4A21","./views/timerView.js":"fNwdq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/settingsView.js":"9tyw1"}],"Y4A21":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
-parcelHelpers.export(exports, "changeCurrentTimer", ()=>changeCurrentTimer);
+parcelHelpers.export(exports, "getTimerObject", ()=>getTimerObject);
+parcelHelpers.export(exports, "getNextTimerName", ()=>getNextTimerName);
 const state = {
     colors: {
         red: [
@@ -634,13 +672,14 @@ const state = {
             "#c07000"
         ]
     },
-    sessionCounter: 0,
-    longBreakInterval: 4,
+    autoStartPomodoro: false,
     autoStartBreak: true,
-    autoStartPomodoro: true,
+    longBreakIntervals: 4,
+    sessionCounter: 1,
     timers: {
         pomodoro: {
-            timer: 1500,
+            name: "pomodoro",
+            timer: 3,
             colorSet: [
                 "#c84242",
                 "#ce5555",
@@ -649,7 +688,8 @@ const state = {
             ]
         },
         shortBreak: {
-            timer: 300,
+            name: "shortBreak",
+            timer: 2,
             colorSet: [
                 "#2f9e44",
                 "#44a857",
@@ -658,7 +698,8 @@ const state = {
             ]
         },
         longBreak: {
-            timer: 900,
+            name: "longBreak",
+            timer: 1,
             colorSet: [
                 "#1971c2",
                 "#307fc8",
@@ -666,19 +707,15 @@ const state = {
                 "#145a9b"
             ]
         }
-    },
-    currentTimer: {
-        timer: 1500,
-        colorSet: [
-            "#c84242",
-            "#ce5555",
-            "#d36868",
-            "#b43b3b"
-        ]
     }
 };
-const changeCurrentTimer = function(curTime) {
-    state.currentTimer = state.timers[curTime];
+const getTimerObject = function(timerModeName) {
+    return state.timers[timerModeName];
+};
+const getNextTimerName = function(currentTimerName) {
+    if (currentTimerName === "pomodoro" && state.sessionCounter % state.longBreakIntervals !== 0) return "shortBreak";
+    if (currentTimerName === "pomodoro" && state.sessionCounter % state.longBreakIntervals === 0) return "longBreak";
+    return "pomodoro";
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
@@ -715,76 +752,274 @@ exports.export = function(dest, destName, get) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class TimerView {
-    #timerStartBtn = document.querySelector(".btn--timer");
-    #timerNextBtn = document.querySelector(".btn--next-session");
-    #timerTabsContainer = document.querySelector(".timer--tabs-box");
-    #timerTabs = document.querySelectorAll(".timer--tab");
-    #timerBox = document.querySelector(".counter--num-text");
-    #root = document.querySelector(":root");
-    #time;
-    #timerInterval;
-    addHandlerSelectTab(handler) {
-        this.#timerTabsContainer.addEventListener("click", (e)=>{
-            this._setTabWindow(e.target);
+    #modeTabsContainer = document.querySelector(".timer--tabs-box");
+    #modeTabs = document.querySelectorAll(".timer--tab");
+    #timerBtn = document.querySelector(".btn--timer");
+    #timerNextSessionBtn = document.querySelector(".btn--next-session");
+    #timerDisplay = document.querySelector(".counter--num-text");
+    #timerSessionResetBtn = document.querySelector(".timer--session-reset-btn");
+    #timerState = false;
+    #timerID = null;
+    #checkTimerID = null;
+    #currentTimerValue = 0;
+    #currentTimerBackground = null;
+    #sessionCounter = 1;
+    /**************** EVENT HANDLERS ****************/ addHandlerReset(handler) {
+        this.#timerSessionResetBtn.addEventListener("click", ()=>{
+            if (window.confirm("Are you sure to reset your sessions?")) {
+                this.#sessionCounter = 1;
+                handler();
+            }
+        });
+    }
+    addHandlerNextSession(handler, state, getNextTimerName) {
+        this.#timerNextSessionBtn.addEventListener("click", ()=>{
+            /* if (
+        getNextTimerName(this.getTimerMode()) === 'shortBreak' ||
+        (getNextTimerName(this.getTimerMode()) === 'longBreak' &&
+          state.autoStartBreak)
+      ) {
+      }
+
+      if (
+        getNextTimerName(this.getTimerMode()) === 'pomodoro' &&
+        state.autoStartBreak
+      ) {
+      } else  */ this._stopTimer();
             handler();
         });
     }
-    _startTimer() {
-        this.#timerStartBtn.addEventListener("click", ()=>{
-            this._toggleTimerBtn();
+    addHandlerStart(handler, goToNextSession) {
+        this._timerBtnClickHandler(goToNextSession);
+        handler();
+    }
+    addHandlerTab(handler) {
+        this.#modeTabsContainer.addEventListener("click", (e)=>{
+            if (!e.target.classList.contains("timer--tab")) return;
+            this._activateTab(e.target);
+            handler();
+            this._stopTimer();
         });
     }
-    _toggleTimerBtn() {
-        if (!this.#timerStartBtn.classList.contains("clicked")) {
-            this.#timerStartBtn.textContent = "pause";
-            this.#timerStartBtn.classList.add("clicked");
-            this._tickTimer();
-            this.#timerNextBtn.classList.remove("hidden");
-        } else {
-            this.#timerStartBtn.textContent = "start";
-            this.#timerStartBtn.classList.remove("clicked");
-            this.#timerNextBtn.classList.add("hidden");
-            this._stopTimer();
-        }
+    /**************** TIMER FUNCTIONS ****************/ _timerBtnClickHandler(goToNextSession) {
+        this.#timerBtn.addEventListener("click", ()=>{
+            if (this.#timerState) this._stopTimer();
+            else this._startTimer(goToNextSession);
+        });
     }
-    // Displaying current timer state into display
-    _displayTimer() {
-        this.#timerBox.textContent = `${String(Math.floor(this.#time / 60)).padStart(2, "0")}:${String(this.#time % 60).padStart(2, "0")}`;
+    _clickBtn() {
+        this.#timerBtn.classList.add("clicked");
+        this.#timerBtn.textContent = "pause";
+        this.#timerNextSessionBtn.classList.remove("hidden");
+        this.#timerState = true;
     }
-    // Adding time interval into the timer
-    _tickTimer() {
-        this.#timerInterval = setInterval(()=>{
-            this.#time--;
-            this._displayTimer();
+    _unClickBtn() {
+        this.#timerBtn.classList.remove("clicked");
+        this.#timerBtn.textContent = "start";
+        this.#timerNextSessionBtn.classList.add("hidden");
+        this.#timerState = false;
+    }
+    _resumeTimer(goToNextSession) {
+        this.#timerID = setInterval(()=>{
+            if (this.#currentTimerValue !== 0) {
+                this.#currentTimerValue--;
+                this._displayTimer();
+            } else {
+                const autoStart = goToNextSession();
+                if (autoStart.nextTimer === "pomodoro" && autoStart.autoStartPomodoro) ;
+                else if (autoStart.nextTimer !== "pomodoro" && autoStart.autoStartBreak) ;
+                else this._stopTimer();
+            }
         }, 1000);
     }
-    // Clearing time interval from the timer
+    _pauseTimer() {
+        clearInterval(this.#timerID);
+    }
+    _startTimer(goToNextSession) {
+        this._resumeTimer(goToNextSession);
+        this._clickBtn();
+    }
     _stopTimer() {
-        clearInterval(this.#timerInterval);
+        this._unClickBtn();
+        this._pauseTimer();
     }
-    // Setting current timer mode
-    setTimer(curTimer) {
-        this.#time = curTimer;
-        this._startTimer();
+    _displayTimer() {
+        this.#timerDisplay.textContent = `${String(Math.floor(this.#currentTimerValue / 60)).padStart(2, "0")}:${String(this.#currentTimerValue % 60).padStart(2, "0")}`;
+    }
+    _displaySession() {
+        this.#timerSessionResetBtn.textContent = `#${this.#sessionCounter}`;
+    }
+    setSession(currentSessionNum) {
+        this.#sessionCounter = currentSessionNum;
+        this._displaySession();
+    }
+    setTimer(timerObject) {
+        this.#currentTimerValue = timerObject.timer;
+        this.#currentTimerBackground = timerObject.colorSet;
+        this._setTimerBackground(this.#currentTimerBackground);
         this._displayTimer();
+        this.#modeTabs.forEach((tab)=>{
+            if (tab.dataset.mode === timerObject.name) this._activateTab(tab);
+        });
     }
-    // Highlights current selected tab on tabs window
-    _setTabWindow(selectedTab) {
-        this._stopTimer();
-        this.#timerTabs.forEach((tab)=>{
+    getTimerMode() {
+        let activeTimerModeName = "";
+        this.#modeTabs.forEach((tab)=>{
+            if (tab.classList.contains("active")) activeTimerModeName = tab.dataset.mode;
+        });
+        return activeTimerModeName;
+    }
+    _setTimerBackground(curTimeBackground) {
+        document.documentElement.style.setProperty("--primary-color", curTimeBackground[0]);
+        document.documentElement.style.setProperty("--light-color", curTimeBackground[1]);
+        document.documentElement.style.setProperty("--light-color-tint--1", curTimeBackground[2]);
+        document.documentElement.style.setProperty("--dense-color", curTimeBackground[3]);
+    /* --primary-color: #c84242;
+    --light-color: #ce5555;
+    --light-color-tint--1: #d36868;
+    --dense-color: #a03535; */ }
+    /**************** TAB FUNCTIONS ****************/ _activateTab(selectedTab) {
+        this.#modeTabs.forEach((tab)=>{
             tab.classList.remove("active");
         });
         selectedTab.classList.add("active");
     }
-    getTimerMode() {
-        let activeTab = null;
-        this.#timerTabs.forEach((tab)=>{
-            if (tab.classList.contains("active")) activeTab = tab;
-        });
-        return activeTab.dataset.mode;
-    }
 }
 exports.default = new TimerView();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9tyw1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class SettingsView {
+    #navBar = document.querySelector(".nav-bar");
+    #modalForm = document.querySelector(".modal-form");
+    #modalOverlay = document.querySelector(".overlay");
+    #modals = document.querySelectorAll(".modal");
+    #modalCloseBtns = document.querySelectorAll(".btn-close");
+    #modalSliderBtns = document.querySelectorAll(".btn-slider-container");
+    #pomodoroInput = document.getElementById("timer-pomodoro");
+    #shortBreakInput = document.getElementById("timer-short-br");
+    #longBreakInput = document.getElementById("timer-long-br");
+    #colorThemeSelectBtns = document.querySelectorAll(".btn-color-theme-select");
+    #colorThemeBtns = document.querySelectorAll(".btn-color-theme");
+    #colorThemeContainer = document.querySelector(".color-theme-btn-container");
+    #colorSelectTextContainer = document.querySelector(".color-select-text");
+    #colorThemeBtnSelectContainer = document.querySelector(".color-theme-btn-select-container");
+    #breakIntervalInput = document.getElementById("break-interval");
+    #selectedTimerMode = null;
+    #selectedColorSet = null;
+    #colors = {
+        red: [
+            "#c84242"
+        ],
+        pink: [
+            "#ae3ec9"
+        ],
+        blue: [
+            "#1971c2"
+        ],
+        green: [
+            "#2f9e44"
+        ],
+        purple: [
+            "#7048e8"
+        ],
+        yellow: [
+            "#f08c00"
+        ]
+    };
+    constructor(){
+        this._handlerNavButton();
+        this._timerColorThemeClickHandler();
+    }
+    addHandlerTimerSettings(handler, state) {
+        this.#modalForm.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            if (this.#pomodoroInput.value !== "" || this.#shortBreakInput.value !== "" || this.#longBreakInput.value !== "") {
+                state.timers.pomodoro.timer = +this.#pomodoroInput.value * 60;
+                this.#pomodoroInput.value = "";
+                state.timers.shortBreak.timer = +this.#shortBreakInput.value * 60;
+                this.#shortBreakInput.value = "";
+                state.timers.longBreak.timer = +this.#longBreakInput.value * 60;
+                this.#longBreakInput.value = "";
+            }
+            if (this.#breakIntervalInput.value !== "") {
+                state.longBreakIntervals = +this.#breakIntervalInput.value;
+                this.#breakIntervalInput.value = "";
+            }
+            this._closeModal();
+            handler();
+        });
+    }
+    addHandlerApplyColorSettings(handler, state) {
+        this.#colorThemeBtnSelectContainer.addEventListener("click", (e)=>{
+            if (!e.target.classList.contains("btn-color-theme-select")) return;
+            this.#selectedColorSet = this._chooseColor(e.target);
+            this.#selectedColorSet = e.target.dataset.color;
+            this.#colorThemeBtns.forEach((button)=>{
+                this.#colorThemeBtns.forEach((button)=>{
+                    if (button.dataset.timer === this.#selectedTimerMode) button.style.backgroundColor = this.#colors[this.#selectedColorSet];
+                });
+            });
+            state.timers[this.#selectedTimerMode].colorSet = state.colors[this.#selectedColorSet];
+            this.#modals[1].classList.add("hidden");
+            this.#modals[0].classList.remove("hidden");
+            handler();
+        });
+    }
+    addHandlerSliderBtn(handler) {
+        this.#modalSliderBtns.forEach((slider)=>{
+            slider.addEventListener("click", (e)=>{
+                slider.classList.toggle("btn-slider-active");
+                handler(slider.dataset.name);
+            });
+        });
+    /* btn-slider-active */ }
+    _handlerNavButton() {
+        this.#navBar.addEventListener("click", (e)=>{
+            if (!e.target.classList.contains("btn-nav")) return;
+            const curModal = e.target.dataset.target;
+            this._openModal(curModal);
+        });
+        this.#modalCloseBtns.forEach((button)=>{
+            button.addEventListener("click", ()=>this._closeModal());
+        });
+        this.#modalOverlay.addEventListener("click", ()=>this._closeModal());
+    }
+    _timerColorThemeClickHandler() {
+        this.#colorThemeContainer.addEventListener("click", (e)=>{
+            e.target.classList.contains;
+            this.#modals[0].classList.add("hidden");
+            this.#modals[1].classList.remove("hidden");
+            if (e.target.dataset.timer === "pomodoro") this.#colorSelectTextContainer.textContent = "Pick a color for Pomodoro";
+            if (e.target.dataset.timer === "shortBreak") this.#colorSelectTextContainer.textContent = "Pick a color for Short Break";
+            if (e.target.dataset.timer === "longBreak") this.#colorSelectTextContainer.textContent = "Pick a color for Long Break";
+            this.#selectedTimerMode = e.target.dataset.timer;
+        });
+    }
+    _chooseColor(selectedColorBtn) {
+        this.#colorThemeSelectBtns.forEach((button)=>{
+            button.classList.remove("selected");
+        });
+        selectedColorBtn.classList.add("selected");
+        return selectedColorBtn.dataset.color;
+    }
+    _openModal(curModal) {
+        this.#modals.forEach((modal)=>{
+            if (modal.classList.contains(`modal__${curModal}`)) {
+                modal.classList.remove("hidden");
+                this.#modalOverlay.classList.remove("hidden");
+            }
+        });
+    }
+    _closeModal() {
+        this.#modals.forEach((modal)=>{
+            modal.classList.add("hidden");
+        });
+        this.#modalOverlay.classList.add("hidden");
+    }
+}
+exports.default = new SettingsView();
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aD7Zm","aenu9"], "aenu9", "parcelRequireb6dc")
 

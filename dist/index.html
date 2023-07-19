@@ -23,8 +23,8 @@
 
     <script src="/index.e37f48ea.js" defer=""></script>
 
-    <link rel="stylesheet" href="/index.3b8f328d.css">
     <link rel="stylesheet" href="/index.b9654202.css">
+    <link rel="stylesheet" href="/index.3b8f328d.css">
     <title>Pomodoki &mdash; A free pomodoro app</title>
   </head>
   <body>
@@ -41,12 +41,12 @@
             <nav class="nav-bar">
               <ul class="nav-bar-links">
                 <li class="nav-link">
-                  <button class="btn">
+                  <button class="btn btn-nav" data-target="settings">
                     <i class="uil uil-setting"></i> Settings
                   </button>
                 </li>
                 <li class="nav-link">
-                  <button class="btn">
+                  <button class="btn btn-nav" data-target="introduction">
                     <i class="uil uil-question-circle"></i> What is Pomodoki?
                   </button>
                 </li>
@@ -71,7 +71,7 @@
               </div>
             </div>
             <div class="timer--counter-box">
-              <p class="counter--num-text">25:00</p>
+              <p class="counter--num-text"></p>
             </div>
             <div class="btn--container">
               <button class="btn--timer">Start</button>
@@ -86,9 +86,158 @@
           </div>
         </div>
       </section>
-      <div class="modal-window"></div>
-      <div class="overlay"></div>
     </div>
     <footer></footer>
+
+    <div class="modal modal__settings hidden">
+      <header class="modal-header">
+        <h2 class="modal-primary-header">Settings</h2>
+        <button class="modal-btn btn-close">
+          <i class="close-icon uil uil-times"></i>
+        </button>
+      </header>
+      <hr class="margin-bottom-lg">
+      <div class="modal-content-box">
+        <form class="modal-form">
+          <div class="modal-title-box">
+            <i class="timer-icon uil uil-clock"></i>
+            <h2 class="modal-secondary-header">timer</h2>
+          </div>
+          <h3 class="margin-bottom-md modal-subheading">Time (minutes)</h3>
+          <div class="timer-box">
+            <div class="timer-input-box">
+              <label for="timer-pomodoro">Pomodoro</label>
+              <input class="modal-input-box" type="number" name="pomodoro" id="timer-pomodoro" min="1" step="1">
+            </div>
+
+            <div class="timer-input-box">
+              <label for="timer-short-br">Short Break</label>
+              <input class="modal-input-box" type="number" name="short-br" min="1" id="timer-short-br">
+            </div>
+
+            <div class="timer-input-box">
+              <label for="timer-long-br">Long Break</label>
+              <input class="modal-input-box" type="number" name="long-br" min="1" id="timer-long-br">
+            </div>
+          </div>
+
+          <div class="modal-inline-input-box">
+            <h3 class="modal-subheading">Auto Start Breaks</h3>
+            <div class="btn-slider">
+              <div class="btn-slider-container btn-slider-active" data-name="shortBreak">
+                <div class="btn-slider-circle"></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-inline-input-box">
+            <h3 class="modal-subheading">Auto Start Pomodoros</h3>
+            <div class="btn-slider">
+              <div class="btn-slider-container" data-name="pomodoro">
+                <div class="btn-slider-circle"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-inline-input-box">
+            <h3 class="modal-subheading">Long Break Interval</h3>
+            <input class="modal-input-box" type="number" name="break-interval" id="break-interval">
+          </div>
+
+          <hr class="margin-bottom-lg">
+
+          <div class="modal-title-box margin-bottom-lg">
+            <i class="timer-icon uil uil-image-edit"></i>
+            <h2 class="modal-secondary-header">theme</h2>
+          </div>
+          <div class="modal-inline-input-box">
+            <h3 class="modal-subheading">Color Themes</h3>
+            <div class="color-theme-btn-container">
+              <div class="btn-color-theme" data-timer="pomodoro"></div>
+              <div class="btn-color-theme" data-timer="shortBreak"></div>
+              <div class="btn-color-theme" data-timer="longBreak"></div>
+            </div>
+          </div>
+
+          <button class="btn btn-submit" type="submit">OK</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal modal__color-select-box hidden">
+      <h3 class="modal-subheading margin-bottom-sm color-select-text">
+        Pick a color for Pomodoro
+      </h3>
+      <hr class="margin-bottom-lg">
+      <div class="color-theme-btn-select-container">
+        <div class="btn-color-theme-select selected" data-color="red"></div>
+        <div class="btn-color-theme-select" data-color="green"></div>
+        <div class="btn-color-theme-select" data-color="blue"></div>
+        <div class="btn-color-theme-select" data-color="pink"></div>
+        <div class="btn-color-theme-select" data-color="purple"></div>
+        <div class="btn-color-theme-select" data-color="yellow"></div>
+      </div>
+    </div>
+
+    <div class="modal modal__introduction hidden">
+      <header class="modal-header">
+        <h2 class="modal-primary-header">About</h2>
+        <button class="modal-btn btn-close">
+          <i class="close-icon uil uil-times"></i>
+        </button>
+      </header>
+      <hr class="margin-bottom-sm">
+      <div class="modal-content-box margin-bottom-lg">
+        <div class="modal-text-box">
+          <h3 class="modal-subheading">What is Pomodoki?</h3>
+          <hr class="border-bottom margin-bottom-sm">
+          <p class="modal-text">
+            Pomodoki is a customizable pomodoro timer that works on desktop
+            browser. The aim of this app is to help you focus on any task you
+            are working on, such as study, writing, or coding. This app is
+            inspired by
+            <a class="modal-link" href="https://francescocirillo.com/products/the-pomodoro-technique">Pomodoro Technique</a>
+            which is a time management method developed by Francesco Cirillo.
+          </p>
+        </div>
+
+        <div class="modal-text-box">
+          <h3 class="modal-subheading">What is Pomodoro Technique?</h3>
+          <hr class="border-bottom margin-bottom-sm">
+          <p class="modal-text">
+            The Pomodoro Technique is created by Francesco Cirillo for a more
+            productive way to work and study. The technique uses a timer to
+            break down work into intervals, traditionally 25 minutes in length,
+            separated by short breaks. Each interval is known as a pomodoro,
+            from the Italian word for 'tomato', after the tomato-shaped kitchen
+            timer that Cirillo used as a university student.
+          </p>
+        </div>
+
+        <div class="modal-text-box">
+          <h3 class="modal-subheading">How to use the Pomodoro Timer?</h3>
+          <hr class="border-bottom margin-bottom-sm">
+          <!-- Not visible on small monitor -->
+          <ol class="modal-list">
+            <li class="modal-text-list">
+              <span class="bold-text">Set pomodoro</span> (1 = 25min of work)
+            </li>
+            <li class="modal-text-list">
+              <span class="bold-text">Start timer</span> and focus on the task
+              for 25 minutes
+            </li>
+            <li class="modal-text-list">
+              <span class="bold-text">Take a break</span> for 5 minutes when the
+              alarm ring
+            </li>
+            <li class="modal-text-list">
+              <span class="bold-text">Iterate</span> 3-5 until you finish the
+              tasks
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay hidden"></div>
   </body>
 </html>

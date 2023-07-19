@@ -1,86 +1,193 @@
 class TimerView {
-  #timerStartBtn = document.querySelector('.btn--timer');
-  #timerNextBtn = document.querySelector('.btn--next-session');
-  #timerTabsContainer = document.querySelector('.timer--tabs-box');
-  #timerTabs = document.querySelectorAll('.timer--tab');
-  #timerBox = document.querySelector('.counter--num-text');
-  #root = document.querySelector(':root');
-  #time;
-  #timerInterval;
+  #modeTabsContainer = document.querySelector('.timer--tabs-box');
+  #modeTabs = document.querySelectorAll('.timer--tab');
+  #timerBtn = document.querySelector('.btn--timer');
+  #timerNextSessionBtn = document.querySelector('.btn--next-session');
+  #timerDisplay = document.querySelector('.counter--num-text');
+  #timerSessionResetBtn = document.querySelector('.timer--session-reset-btn');
 
-  addHandlerSelectTab(handler) {
-    this.#timerTabsContainer.addEventListener('click', (e) => {
-      this._setTabWindow(e.target);
+  #timerState = false;
+  #timerID = null;
+  #checkTimerID = null;
+  #currentTimerValue = 0;
+  #currentTimerBackground = null;
+
+  #sessionCounter = 1;
+
+  /**************** EVENT HANDLERS ****************/
+  addHandlerReset(handler) {
+    this.#timerSessionResetBtn.addEventListener('click', () => {
+      if (window.confirm('Are you sure to reset your sessions?')) {
+        this.#sessionCounter = 1;
+        handler();
+      }
+    });
+  }
+
+  addHandlerNextSession(handler, state, getNextTimerName) {
+    this.#timerNextSessionBtn.addEventListener('click', () => {
+      /* if (
+        getNextTimerName(this.getTimerMode()) === 'shortBreak' ||
+        (getNextTimerName(this.getTimerMode()) === 'longBreak' &&
+          state.autoStartBreak)
+      ) {
+      }
+
+      if (
+        getNextTimerName(this.getTimerMode()) === 'pomodoro' &&
+        state.autoStartBreak
+      ) {
+      } else  */ this._stopTimer();
       handler();
     });
   }
+  addHandlerStart(handler, goToNextSession) {
+    this._timerBtnClickHandler(goToNextSession);
+    handler();
+  }
 
-  _startTimer() {
-    this.#timerStartBtn.addEventListener('click', () => {
-      this._toggleTimerBtn();
+  addHandlerTab(handler) {
+    this.#modeTabsContainer.addEventListener('click', (e) => {
+      if (!e.target.classList.contains('timer--tab')) return;
+
+      this._activateTab(e.target);
+      handler();
+      this._stopTimer();
     });
   }
 
-  _toggleTimerBtn() {
-    if (!this.#timerStartBtn.classList.contains('clicked')) {
-      this.#timerStartBtn.textContent = 'pause';
-      this.#timerStartBtn.classList.add('clicked');
-      this._tickTimer();
-      this.#timerNextBtn.classList.remove('hidden');
-    } else {
-      this.#timerStartBtn.textContent = 'start';
-      this.#timerStartBtn.classList.remove('clicked');
-      this.#timerNextBtn.classList.add('hidden');
-      this._stopTimer();
-    }
+  /**************** TIMER FUNCTIONS ****************/
+
+  _timerBtnClickHandler(goToNextSession) {
+    this.#timerBtn.addEventListener('click', () => {
+      if (this.#timerState) {
+        this._stopTimer();
+      } else {
+        this._startTimer(goToNextSession);
+      }
+    });
   }
 
-  // Displaying current timer state into display
-  _displayTimer() {
-    this.#timerBox.textContent = `${String(
-      Math.floor(this.#time / 60)
-    ).padStart(2, '0')}:${String(this.#time % 60).padStart(2, '0')}`;
+  _clickBtn() {
+    this.#timerBtn.classList.add('clicked');
+    this.#timerBtn.textContent = 'pause';
+    this.#timerNextSessionBtn.classList.remove('hidden');
+    this.#timerState = true;
   }
 
-  // Adding time interval into the timer
-  _tickTimer() {
-    this.#timerInterval = setInterval(() => {
-      this.#time--;
-      this._displayTimer();
+  _unClickBtn() {
+    this.#timerBtn.classList.remove('clicked');
+    this.#timerBtn.textContent = 'start';
+    this.#timerNextSessionBtn.classList.add('hidden');
+    this.#timerState = false;
+  }
+
+  _resumeTimer(goToNextSession) {
+    this.#timerID = setInterval(() => {
+      if (this.#currentTimerValue !== 0) {
+        this.#currentTimerValue--;
+        this._displayTimer();
+      } else {
+        const autoStart = goToNextSession();
+        if (autoStart.nextTimer === 'pomodoro' && autoStart.autoStartPomodoro);
+        else if (
+          autoStart.nextTimer !== 'pomodoro' &&
+          autoStart.autoStartBreak
+        );
+        else {
+          this._stopTimer();
+        }
+      }
     }, 1000);
   }
 
-  // Clearing time interval from the timer
+  _pauseTimer() {
+    clearInterval(this.#timerID);
+  }
+
+  _startTimer(goToNextSession) {
+    this._resumeTimer(goToNextSession);
+    this._clickBtn();
+  }
+
   _stopTimer() {
-    clearInterval(this.#timerInterval);
+    this._unClickBtn();
+    this._pauseTimer();
   }
 
-  // Setting current timer mode
-  setTimer(curTimer) {
-    this.#time = curTimer;
-    this._startTimer();
+  _displayTimer() {
+    this.#timerDisplay.textContent = `${String(
+      Math.floor(this.#currentTimerValue / 60)
+    ).padStart(2, '0')}:${String(this.#currentTimerValue % 60).padStart(
+      2,
+      '0'
+    )}`;
+  }
+
+  _displaySession() {
+    this.#timerSessionResetBtn.textContent = `#${this.#sessionCounter}`;
+  }
+
+  setSession(currentSessionNum) {
+    this.#sessionCounter = currentSessionNum;
+    this._displaySession();
+  }
+
+  setTimer(timerObject) {
+    this.#currentTimerValue = timerObject.timer;
+    this.#currentTimerBackground = timerObject.colorSet;
+    this._setTimerBackground(this.#currentTimerBackground);
     this._displayTimer();
+    this.#modeTabs.forEach((tab) => {
+      if (tab.dataset.mode === timerObject.name) {
+        this._activateTab(tab);
+      }
+    });
   }
 
-  // Highlights current selected tab on tabs window
-  _setTabWindow(selectedTab) {
-    this._stopTimer();
-    this.#timerTabs.forEach((tab) => {
+  getTimerMode() {
+    let activeTimerModeName = '';
+
+    this.#modeTabs.forEach((tab) => {
+      if (tab.classList.contains('active')) {
+        activeTimerModeName = tab.dataset.mode;
+      }
+    });
+
+    return activeTimerModeName;
+  }
+
+  _setTimerBackground(curTimeBackground) {
+    document.documentElement.style.setProperty(
+      '--primary-color',
+      curTimeBackground[0]
+    );
+    document.documentElement.style.setProperty(
+      '--light-color',
+      curTimeBackground[1]
+    );
+    document.documentElement.style.setProperty(
+      '--light-color-tint--1',
+      curTimeBackground[2]
+    );
+    document.documentElement.style.setProperty(
+      '--dense-color',
+      curTimeBackground[3]
+    );
+    /* --primary-color: #c84242;
+    --light-color: #ce5555;
+    --light-color-tint--1: #d36868;
+    --dense-color: #a03535; */
+  }
+
+  /**************** TAB FUNCTIONS ****************/
+
+  _activateTab(selectedTab) {
+    this.#modeTabs.forEach((tab) => {
       tab.classList.remove('active');
     });
 
     selectedTab.classList.add('active');
-  }
-
-  getTimerMode() {
-    let activeTab = null;
-    this.#timerTabs.forEach((tab) => {
-      if (tab.classList.contains('active')) {
-        activeTab = tab;
-      }
-    });
-
-    return activeTab.dataset.mode;
   }
 }
 

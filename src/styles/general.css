@@ -23,6 +23,11 @@ FONT SIZE SYSTEM (px)
 - Accents 
 
 - Greys
+Modal Bold: #555;
+Modal Light: #888;
+Primary Text Color: #ececec;
+Timer Reset Button: #e0e0e0;
+
 
 --- 05 SHADOWS
 
@@ -130,4 +135,26 @@ body {
 .section--sep-line {
   border-bottom: 1px solid var(--dense-color);
   margin-top: 1.6rem;
+}
+
+.margin-bottom-sm {
+  margin-bottom: 1.2rem;
+}
+
+.margin-bottom-md {
+  margin-bottom: 1.6rem;
+}
+
+.margin-bottom-lg {
+  margin-bottom: 2.4rem;
+}
+
+.border-bottom {
+  width: 20px;
+  border-bottom: 1px solid #c84242;
+  margin-top: 3px;
+}
+
+.bold-text {
+  font-weight: 600;
 }

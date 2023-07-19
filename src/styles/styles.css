@@ -97,7 +97,7 @@
   display: block;
   margin: 0 auto;
   /* border-bottom: 8px solid #ececec; */
-  box-shadow: 0 8px 0 #ececec;
+  box-shadow: 0 8px 0 var(--primary-text-color);
   cursor: pointer;
   background-color: #fff;
 }
@@ -146,6 +146,253 @@
   color: #fff;
 }
 
+/* *********************** */
+/* MODAL WINDOW */
+/* *********************** */
+.modal {
+  position: fixed;
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(255, 255, 255);
+  padding: 3.2rem 2.4rem;
+  z-index: 999;
+  color: #555;
+  border-radius: 11px;
+  border: none;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+}
+
+.modal-btn {
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+  font-size: 2.4rem;
+  color: #888;
+}
+
+.modal-btn:hover {
+  color: #555;
+}
+
+.modal-primary-header {
+  font-size: 2rem;
+}
+
+.modal-title-box {
+  display: flex;
+  gap: 6px;
+  color: #888;
+  margin-bottom: 1.6rem;
+}
+
+.timer-icon {
+  font-size: 1.6rem;
+}
+
+.modal-secondary-header {
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+/* MODAL CONTENT */
+.modal {
+  color: #777;
+}
+
+.modal-subheading {
+  font-size: 1.6rem;
+  color: #555;
+}
+
+.timer-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: space-between;
+  column-gap: 2.4rem;
+  margin-bottom: 3.2rem;
+}
+
+.modal label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #888;
+  font-size: 1.4rem;
+}
+
+.modal-input-box {
+  display: inline;
+  border: none;
+  background-color: var(--primary-text-color);
+  border-radius: 5px;
+  font-size: 1.6rem;
+  color: #555;
+  padding: 8px;
+  width: 10rem;
+}
+
+.modal-inline-input-box {
+  margin-bottom: 3.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-slider-container {
+  background-color: #e9ecef;
+  height: 40px;
+  width: 72px;
+  border-radius: 50px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.btn-slider-container.btn-slider-active {
+  background-color: #69db7c;
+}
+
+.btn-slider-circle {
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  background-color: #fff;
+}
+
+.btn-slider-container.btn-slider-active .btn-slider-circle {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.color-theme-btn-container {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-color-theme {
+  cursor: pointer;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 5px;
+}
+
+.btn-color-theme-select {
+  cursor: pointer;
+  border: none;
+  padding: 2.4rem;
+  border-radius: 5px;
+}
+
+.btn-color-theme.selected {
+  box-shadow: 0 0 0 2px rgb(75, 75, 75);
+}
+
+.color-theme-btn-select-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-color-theme:nth-child(1) {
+  background-color: #c84242;
+}
+.btn-color-theme:nth-child(2) {
+  background-color: #2f9e44;
+}
+.btn-color-theme:nth-child(3) {
+  background-color: #1971c2;
+}
+
+.btn-color-theme-select:nth-child(1) {
+  background-color: #c84242;
+}
+.btn-color-theme-select:nth-child(2) {
+  background-color: #2f9e44;
+}
+.btn-color-theme-select:nth-child(3) {
+  background-color: #1971c2;
+}
+.btn-color-theme-select:nth-child(4) {
+  background-color: #ae3ec9;
+}
+.btn-color-theme-select:nth-child(5) {
+  background-color: #7048e8;
+}
+.btn-color-theme-select:nth-child(6) {
+  background-color: #f08c00;
+}
+
+.btn-submit {
+  border: none;
+  background-color: #343a40;
+  padding: 1.2rem 3.2rem;
+  display: block;
+  margin-right: 0;
+  margin-left: auto;
+}
+
+.btn-submit:hover {
+  background-color: #212529;
+}
+
+.modal__introduction {
+  max-width: 56rem;
+}
+
+.modal-text {
+  font-size: 1.6rem;
+  line-height: 1.4;
+  margin-bottom: 2.4rem;
+}
+
+.modal-link:link,
+.modal-link:visited {
+  color: #c84242;
+  font-weight: 600;
+  font-size: 1.6rem;
+  text-decoration: none;
+  border-bottom: 2px solid currentColor;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.modal-link:hover,
+.modal-link:active {
+  color: #d36868;
+}
+
+.modal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modal-text-list {
+  font-size: 1.6rem;
+  margin-left: 1.6rem;
+}
+
+/* ******************************* */
+
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
 .active {
   font-weight: 600;
   background-color: var(--dense-color);
@@ -153,4 +400,6 @@
 
 .hidden {
   display: none;
+  visibility: hidden;
+  opacity: 0;
 }
