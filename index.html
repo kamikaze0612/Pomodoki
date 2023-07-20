@@ -8,6 +8,7 @@
       name="description"
       content="Pomodoki is an online free pomodoro app to help you focus on your tasks."
     />
+    <meta name="author" content="Buyantogtokh Bekhbayar" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -44,6 +45,7 @@
 
     <link rel="stylesheet" href="./src/styles/general.css" />
     <link rel="stylesheet" href="./src/styles/styles.css" />
+    <link rel="stylesheet" href="./src/styles/queries.css" />
     <title>Pomodoki &mdash; A free pomodoro app</title>
   </head>
   <body>
@@ -65,12 +67,14 @@
               <ul class="nav-bar-links">
                 <li class="nav-link">
                   <button class="btn btn-nav" data-target="settings">
-                    <i class="uil uil-setting"></i> Settings
+                    <i class="uil uil-setting"></i>
+                    <p class="settings--text">Settings</p>
                   </button>
                 </li>
                 <li class="nav-link">
                   <button class="btn btn-nav" data-target="introduction">
-                    <i class="uil uil-question-circle"></i> What is Pomodoki?
+                    <i class="uil uil-question-circle"></i>
+                    <p class="settings--text">What is Pomodoki?</p>
                   </button>
                 </li>
               </ul>
@@ -110,7 +114,26 @@
         </div>
       </section>
     </div>
-    <footer></footer>
+
+    <footer class="footer">
+      <div class="social-links--box">
+        <a
+          class="social-link"
+          href="https://www.facebook.com/profile.php?id=100005116724021"
+          ><i class="social-icon uil uil-facebook-f"></i
+        ></a>
+        <a class="social-link" href="https://www.instagram.com/buyadai/"
+          ><i class="social-icon uil uil-instagram"></i
+        ></a>
+        <a class="social-link" href="https://github.com/kamikaze0612"
+          ><i class="social-icon uil uil-github-alt"></i
+        ></a>
+      </div>
+      <div class="author-text-box">
+        <p class="author-text">Made by Buyantogtokh B.</p>
+        <p class="copyright-text">&copy; Pomodoki 2023. All Rights Reserved.</p>
+      </div>
+    </footer>
 
     <div class="modal modal__settings hidden">
       <header class="modal-header">

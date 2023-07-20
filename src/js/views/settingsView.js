@@ -96,9 +96,10 @@ class SettingsView {
 
   _handlerNavButton() {
     this.#navBar.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('btn-nav')) return;
+      const button = e.target.closest('button');
+      if (!button.classList.contains('btn-nav')) return;
 
-      const curModal = e.target.dataset.target;
+      const curModal = button.dataset.target;
       this._openModal(curModal);
     });
 
@@ -111,7 +112,7 @@ class SettingsView {
 
   _timerColorThemeClickHandler() {
     this.#colorThemeContainer.addEventListener('click', (e) => {
-      if (!e.target.classList.contains === 'btn-color-theme') return;
+      if (!e.target.classList.contains('btn-color-theme')) return;
       this.#modals[0].classList.add('hidden');
       this.#modals[1].classList.remove('hidden');
 

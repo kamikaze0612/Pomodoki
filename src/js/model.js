@@ -14,17 +14,17 @@ export const state = {
   timers: {
     pomodoro: {
       name: 'pomodoro',
-      timer: 3,
+      timer: 1500,
       colorSet: ['#c84242', '#ce5555', '#d36868', '#b43b3b'],
     },
     shortBreak: {
       name: 'shortBreak',
-      timer: 2,
+      timer: 300,
       colorSet: ['#2f9e44', '#44a857', '#59b169', '#267e36'],
     },
     longBreak: {
       name: 'longBreak',
-      timer: 1,
+      timer: 900,
       colorSet: ['#1971c2', '#307fc8', '#478dce', '#145a9b'],
     },
   },

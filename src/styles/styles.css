@@ -2,6 +2,7 @@
 /* MAIN BODY */
 /* *********************** */
 .main-content {
+  background-color: var(--primary-color);
   height: 100vh;
 }
 
@@ -144,6 +145,51 @@
 
 .timer--session-reset-btn:hover {
   color: #fff;
+}
+
+/* *********************** */
+/* MODAL WINDOW */
+/* *********************** */
+.footer {
+  padding: 3.2rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.4rem;
+}
+
+.social-links--box {
+  display: flex;
+  text-decoration: none;
+  font-size: 3.6rem;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.social-link:link,
+.social-link:visited {
+  border-radius: 50%;
+  background-color: var(--primary-text-color);
+  padding: 8px;
+  color: #212529;
+}
+
+.social-link:hover,
+.social-link:active {
+  color: #212529;
+}
+
+.author-text {
+  color: #343a40;
+  font-size: 1.8rem;
+  margin-bottom: 1.6rem;
+}
+
+.copyright-text {
+  color: #777;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 /* *********************** */
@@ -344,7 +390,7 @@
 }
 
 .modal__introduction {
-  max-width: 56rem;
+  width: 56rem;
 }
 
 .modal-text {
