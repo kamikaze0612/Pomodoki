@@ -36,7 +36,7 @@
 }
 
 .logo-text {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   font-size: 2rem;
   font-weight: 700;
 }
@@ -79,7 +79,7 @@
 .counter--num-text {
   font-size: 12.8rem;
   font-weight: 700;
-  font-family: 'Varela Round', sans-serif;
+  font-family: "Varela Round", sans-serif;
 }
 
 .btn--container {
@@ -104,7 +104,6 @@
 }
 
 .btn--next-session {
-  color: #fff;
   border: none;
   background-color: transparent;
   font-size: 6.4rem;
@@ -112,6 +111,12 @@
   top: 0;
   right: 15%;
   cursor: pointer;
+}
+
+.btn--next-session-icon {
+  fill: #fff;
+  height: 4rem;
+  width: 4rem;
 }
 
 .clicked {

@@ -151,7 +151,8 @@ body {
 
 .border-bottom {
   width: 20px;
-  border-bottom: 1px solid #c84242;
+  border: none;
+  border-bottom: 2px solid #c84242;
   margin-top: 3px;
 }
 
