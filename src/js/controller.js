@@ -1,9 +1,9 @@
-import * as model from './model.js';
-import timerView from './views/timerView.js';
-import settingsView from './views/settingsView.js';
+import * as model from "./model.js";
+import timerView from "./views/timerView.js";
+import settingsView from "./views/settingsView.js";
 
 const controlTimer = function () {
-  const currentTimerMode = model.getTimerObject('pomodoro');
+  const currentTimerMode = model.getTimerObject("pomodoro");
   timerView.setTimer(currentTimerMode);
 };
 
@@ -30,7 +30,7 @@ const controlNextSession = function () {
     autoStartBreak: model.state.autoStartBreak,
   };
 
-  if (nextTimerMode !== 'pomodoro') {
+  if (nextTimerMode !== "pomodoro") {
     model.state.sessionCounter++;
   }
   const nextTimerObject = model.getTimerObject(nextTimerMode);
@@ -45,11 +45,11 @@ const controlResetSessions = function () {
 };
 
 const controlSliderBtn = function (value) {
-  if (value === 'shortBreak') {
+  if (value === "shortBreak") {
     model.state.autoStartBreak = !model.state.autoStartBreak;
   }
 
-  if (value === 'pomodoro') {
+  if (value === "pomodoro") {
     model.state.autoStartPomodoro = !model.state.autoStartPomodoro;
   }
 };

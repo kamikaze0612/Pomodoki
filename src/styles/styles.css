@@ -85,6 +85,9 @@
 .btn--container {
   position: relative;
   margin-top: 3.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn--timer {
@@ -103,20 +106,26 @@
   background-color: #fff;
 }
 
+.btn--span {
+  width: auto;
+  display: inline-block;
+  position: relative;
+}
+
 .btn--next-session {
   border: none;
   background-color: transparent;
-  font-size: 6.4rem;
   position: absolute;
-  top: 0;
-  right: 15%;
   cursor: pointer;
+  top: calc(50% + 8px);
+  transform: translateY(-50%);
+  right: -60px;
 }
 
 .btn--next-session-icon {
   fill: #fff;
-  height: 4rem;
-  width: 4rem;
+  height: 3.2rem;
+  width: 3.2rem;
 }
 
 .clicked {

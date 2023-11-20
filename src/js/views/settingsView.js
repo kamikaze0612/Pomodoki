@@ -1,30 +1,30 @@
 class SettingsView {
-  #navBar = document.querySelector('.nav-bar');
-  #modalForm = document.querySelector('.modal-form');
-  #modalOverlay = document.querySelector('.overlay');
-  #modals = document.querySelectorAll('.modal');
-  #modalCloseBtns = document.querySelectorAll('.btn-close');
-  #modalSliderBtns = document.querySelectorAll('.btn-slider-container');
-  #pomodoroInput = document.getElementById('timer-pomodoro');
-  #shortBreakInput = document.getElementById('timer-short-br');
-  #longBreakInput = document.getElementById('timer-long-br');
-  #colorThemeSelectBtns = document.querySelectorAll('.btn-color-theme-select');
-  #colorThemeBtns = document.querySelectorAll('.btn-color-theme');
-  #colorThemeContainer = document.querySelector('.color-theme-btn-container');
-  #colorSelectTextContainer = document.querySelector('.color-select-text');
+  #navBar = document.querySelector(".nav-bar");
+  #modalForm = document.querySelector(".modal-form");
+  #modalOverlay = document.querySelector(".overlay");
+  #modals = document.querySelectorAll(".modal");
+  #modalCloseBtns = document.querySelectorAll(".btn-close");
+  #modalSliderBtns = document.querySelectorAll(".btn-slider-container");
+  #pomodoroInput = document.getElementById("timer-pomodoro");
+  #shortBreakInput = document.getElementById("timer-short-br");
+  #longBreakInput = document.getElementById("timer-long-br");
+  #colorThemeSelectBtns = document.querySelectorAll(".btn-color-theme-select");
+  #colorThemeBtns = document.querySelectorAll(".btn-color-theme");
+  #colorThemeContainer = document.querySelector(".color-theme-btn-container");
+  #colorSelectTextContainer = document.querySelector(".color-select-text");
   #colorThemeBtnSelectContainer = document.querySelector(
-    '.color-theme-btn-select-container'
+    ".color-theme-btn-select-container"
   );
-  #breakIntervalInput = document.getElementById('break-interval');
+  #breakIntervalInput = document.getElementById("break-interval");
   #selectedTimerMode = null;
   #selectedColorSet = null;
   #colors = {
-    red: ['#c84242'],
-    pink: ['#ae3ec9'],
-    blue: ['#1971c2'],
-    green: ['#2f9e44'],
-    purple: ['#7048e8'],
-    yellow: ['#f08c00'],
+    red: ["#c84242"],
+    pink: ["#ae3ec9"],
+    blue: ["#1971c2"],
+    green: ["#2f9e44"],
+    purple: ["#7048e8"],
+    yellow: ["#f08c00"],
   };
 
   constructor() {
@@ -33,36 +33,34 @@ class SettingsView {
   }
 
   addHandlerTimerSettings(handler, state) {
-    this.#modalForm.addEventListener('submit', (e) => {
+    this.#modalForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      if (
-        this.#pomodoroInput.value !== '' ||
-        this.#shortBreakInput.value !== '' ||
-        this.#longBreakInput.value !== ''
-      ) {
-        state.timers.pomodoro.timer = +this.#pomodoroInput.value * 60;
-        this.#pomodoroInput.value = '';
 
-        state.timers.shortBreak.timer = +this.#shortBreakInput.value * 60;
-        this.#shortBreakInput.value = '';
+      // SETTING TIMERS
+      state.timers.pomodoro.timer = this.#pomodoroInput.value
+        ? +this.#pomodoroInput.value * 60
+        : state.timers.pomodoro.timer;
+      state.timers.shortBreak.timer = this.#shortBreakInput.value
+        ? +this.#shortBreakInput.value * 60
+        : state.timers.shortBreak.timer;
+      state.timers.longBreak.timer = this.#longBreakInput.value
+        ? +this.#longBreakInput.value * 60
+        : state.timers.longBreak.timer;
 
-        state.timers.longBreak.timer = +this.#longBreakInput.value * 60;
-        this.#longBreakInput.value = '';
-      }
+      // SETTING LONG BREAK INTERVALS
+      state.longBreakIntervals = this.#breakIntervalInput
+        ? +this.#breakIntervalInput.value
+        : state.longBreakIntervals;
 
-      if (this.#breakIntervalInput.value !== '') {
-        state.longBreakIntervals = +this.#breakIntervalInput.value;
-        this.#breakIntervalInput.value = '';
-      }
-
+      // CLOSING MODAL WHEN SETTINGS APPLIED
       this._closeModal();
       handler();
     });
   }
 
   addHandlerApplyColorSettings(handler, state) {
-    this.#colorThemeBtnSelectContainer.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('btn-color-theme-select')) return;
+    this.#colorThemeBtnSelectContainer.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("btn-color-theme-select")) return;
       this.#selectedColorSet = this._chooseColor(e.target);
       this.#selectedColorSet = e.target.dataset.color;
       this.#colorThemeBtns.forEach((button) => {
@@ -76,8 +74,8 @@ class SettingsView {
       state.timers[this.#selectedTimerMode].colorSet =
         state.colors[this.#selectedColorSet];
 
-      this.#modals[1].classList.add('hidden');
-      this.#modals[0].classList.remove('hidden');
+      this.#modals[1].classList.add("hidden");
+      this.#modals[0].classList.remove("hidden");
 
       handler();
     });
@@ -85,8 +83,8 @@ class SettingsView {
 
   addHandlerSliderBtn(handler) {
     this.#modalSliderBtns.forEach((slider) => {
-      slider.addEventListener('click', (e) => {
-        slider.classList.toggle('btn-slider-active');
+      slider.addEventListener("click", (e) => {
+        slider.classList.toggle("btn-slider-active");
         handler(slider.dataset.name);
       });
     });
@@ -95,40 +93,40 @@ class SettingsView {
   }
 
   _handlerNavButton() {
-    this.#navBar.addEventListener('click', (e) => {
-      const button = e.target.closest('button');
-      if (!button.classList.contains('btn-nav')) return;
+    this.#navBar.addEventListener("click", (e) => {
+      const button = e.target.closest("button");
+      if (!button.classList.contains("btn-nav")) return;
 
       const curModal = button.dataset.target;
       this._openModal(curModal);
     });
 
     this.#modalCloseBtns.forEach((button) => {
-      button.addEventListener('click', () => this._closeModal());
+      button.addEventListener("click", () => this._closeModal());
     });
 
-    this.#modalOverlay.addEventListener('click', () => this._closeModal());
+    this.#modalOverlay.addEventListener("click", () => this._closeModal());
   }
 
   _timerColorThemeClickHandler() {
-    this.#colorThemeContainer.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('btn-color-theme')) return;
-      this.#modals[0].classList.add('hidden');
-      this.#modals[1].classList.remove('hidden');
+    this.#colorThemeContainer.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("btn-color-theme")) return;
+      this.#modals[0].classList.add("hidden");
+      this.#modals[1].classList.remove("hidden");
 
-      if (e.target.dataset.timer === 'pomodoro') {
+      if (e.target.dataset.timer === "pomodoro") {
         this.#colorSelectTextContainer.textContent =
-          'Pick a color for Pomodoro';
+          "Pick a color for Pomodoro";
       }
 
-      if (e.target.dataset.timer === 'shortBreak') {
+      if (e.target.dataset.timer === "shortBreak") {
         this.#colorSelectTextContainer.textContent =
-          'Pick a color for Short Break';
+          "Pick a color for Short Break";
       }
 
-      if (e.target.dataset.timer === 'longBreak') {
+      if (e.target.dataset.timer === "longBreak") {
         this.#colorSelectTextContainer.textContent =
-          'Pick a color for Long Break';
+          "Pick a color for Long Break";
       }
       this.#selectedTimerMode = e.target.dataset.timer;
     });
@@ -136,28 +134,28 @@ class SettingsView {
 
   _chooseColor(selectedColorBtn) {
     this.#colorThemeSelectBtns.forEach((button) => {
-      button.classList.remove('selected');
+      button.classList.remove("selected");
     });
 
-    selectedColorBtn.classList.add('selected');
+    selectedColorBtn.classList.add("selected");
     return selectedColorBtn.dataset.color;
   }
 
   _openModal(curModal) {
     this.#modals.forEach((modal) => {
       if (modal.classList.contains(`modal__${curModal}`)) {
-        modal.classList.remove('hidden');
-        this.#modalOverlay.classList.remove('hidden');
+        modal.classList.remove("hidden");
+        this.#modalOverlay.classList.remove("hidden");
       }
     });
   }
 
   _closeModal() {
     this.#modals.forEach((modal) => {
-      modal.classList.add('hidden');
+      modal.classList.add("hidden");
     });
 
-    this.#modalOverlay.classList.add('hidden');
+    this.#modalOverlay.classList.add("hidden");
   }
 }
 
