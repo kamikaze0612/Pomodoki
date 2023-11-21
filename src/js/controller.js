@@ -45,13 +45,17 @@ const controlResetSessions = function () {
 };
 
 const controlSliderBtn = function (value) {
-  if (value === "shortBreak") {
+  if (value === "break") {
     model.state.autoStartBreak = !model.state.autoStartBreak;
   }
 
   if (value === "pomodoro") {
     model.state.autoStartPomodoro = !model.state.autoStartPomodoro;
   }
+};
+
+const controlSettingsState = function () {
+  return model.state;
 };
 
 const init = function () {
@@ -63,9 +67,11 @@ const init = function () {
     model.getNextTimerName
   );
   timerView.addHandlerReset(controlResetSessions);
+
   settingsView.addHandlerTimerSettings(controlApplySettings, model.state);
   settingsView.addHandlerApplyColorSettings(controlApplySettings, model.state);
   settingsView.addHandlerSliderBtn(controlSliderBtn);
+  settingsView.addHandlerInitializeSettings(controlSettingsState);
 };
 
 init();

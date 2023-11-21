@@ -26,10 +26,17 @@ class SettingsView {
     purple: ["#7048e8"],
     yellow: ["#f08c00"],
   };
+  #settingsState = null;
 
   constructor() {
     this._handlerNavButton();
     this._timerColorThemeClickHandler();
+  }
+
+  // HANDLERS
+  addHandlerInitializeSettings(handler) {
+    const state = handler();
+    this.#settingsState = state;
   }
 
   addHandlerTimerSettings(handler, state) {
@@ -92,6 +99,26 @@ class SettingsView {
     /* btn-slider-active */
   }
 
+  // FUNCTIONS
+  _initializeSettings() {
+    this.#shortBreakInput.value =
+      this.#settingsState.timers.shortBreak.timer / 60;
+    this.#longBreakInput.value =
+      this.#settingsState.timers.longBreak.timer / 60;
+    this.#pomodoroInput.value = this.#settingsState.timers.pomodoro.timer / 60;
+
+    this.#breakIntervalInput.value = this.#settingsState.longBreakIntervals;
+
+    const { autoStartBreak, autoStartPomodoro } = this.#settingsState;
+
+    this.#modalSliderBtns.forEach((slider) => {
+      if (slider.dataset.name === "pomodoro" && autoStartPomodoro)
+        slider.classList.add("btn-slider-active");
+      if (slider.dataset.name === "break" && autoStartBreak)
+        slider.classList.add("btn-slider-active");
+    });
+  }
+
   _handlerNavButton() {
     this.#navBar.addEventListener("click", (e) => {
       const button = e.target.closest("button");
@@ -142,6 +169,10 @@ class SettingsView {
   }
 
   _openModal(curModal) {
+    if (curModal === "settings") {
+      this._initializeSettings();
+    }
+
     this.#modals.forEach((modal) => {
       if (modal.classList.contains(`modal__${curModal}`)) {
         modal.classList.remove("hidden");

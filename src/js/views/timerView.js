@@ -76,15 +76,11 @@ class TimerView {
   _resumeTimer(goToNextSession) {
     this.#timerID = setInterval(() => {
       const timeLeft = Math.floor((this.#end - Date.now()) / 1000);
-      // this.#currentTimerValue = Math.floor((this.#end - Date.now()) / 1000);
-
       if (timeLeft >= 0) {
         this._displayTimer(timeLeft);
       } else {
         this.#timerBeeper.play();
-
         const autoStart = goToNextSession();
-
         if (autoStart.nextTimer === "pomodoro" && autoStart.autoStartPomodoro);
         else if (
           autoStart.nextTimer !== "pomodoro" &&
@@ -92,28 +88,29 @@ class TimerView {
         );
         else {
           this._stopTimer();
+          this.#end = Date.now() + this.#currentTimerValue * 1000;
         }
       }
     }, 200);
 
     // OLD TIMER FUNCTION (Not running when tab is not active)
-    // this.#timerID = setInterval(() => {
-    //   if (this.#currentTimerValue !== 0) {
-    //     this.#currentTimerValue--;
-    //     this._displayTimer(this.#currentTimerValue);
-    //   } else {
-    //     this.#timerBeeper.play();
-    //     const autoStart = goToNextSession();
-    //     if (autoStart.nextTimer === "pomodoro" && autoStart.autoStartPomodoro);
-    //     else if (
-    //       autoStart.nextTimer !== "pomodoro" &&
-    //       autoStart.autoStartBreak
-    //     );
-    //     else {
-    //       this._stopTimer();
+    //   this.#timerID = setInterval(() => {
+    //     if (this.#currentTimerValue !== 0) {
+    //       this.#currentTimerValue--;
+    //       this._displayTimer(this.#currentTimerValue);
+    //     } else {
+    //       this.#timerBeeper.play();
+    //       const autoStart = goToNextSession();
+    //       if (autoStart.nextTimer === "pomodoro" && autoStart.autoStartPomodoro);
+    //       else if (
+    //         autoStart.nextTimer !== "pomodoro" &&
+    //         autoStart.autoStartBreak
+    //       );
+    //       else {
+    //         this._stopTimer();
+    //       }
     //     }
-    //   }
-    // }, 1000);
+    //   }, 1000);
   }
 
   _pauseTimer() {
@@ -121,14 +118,14 @@ class TimerView {
   }
 
   _startTimer(goToNextSession) {
+    this.#end = Date.now() + this.#currentTimerValue * 1000;
     document.title = "Time to Focus!";
     this._resumeTimer(goToNextSession);
     this._clickBtn();
   }
 
   _stopTimer() {
-    console.log("Stop");
-    document.title = "Pomodoki A free pomodoro app";
+    document.title = "Ready to start";
     this._unClickBtn();
     this._pauseTimer();
   }
@@ -149,11 +146,7 @@ class TimerView {
   }
 
   setTimer(timerObject) {
-    console.log("Setting");
-    console.log(timerObject);
-    console.log(this.#currentTimerValue);
     this.#currentTimerValue = timerObject.timer;
-    this.#end = Date.now() + this.#currentTimerValue * 1000;
     this.#currentTimerBackground = timerObject.colorSet;
     this._setTimerBackground(this.#currentTimerBackground);
     this._displayTimer(this.#currentTimerValue);
@@ -162,6 +155,8 @@ class TimerView {
         this._activateTab(tab);
       }
     });
+    if (this.#timerID)
+      this.#end = Date.now() + this.#currentTimerValue * 1000 + 400; // Fix for realtime time calculation
   }
 
   getTimerMode() {
